@@ -19,7 +19,7 @@ Example of the weather display screen, including the current temperature and con
 
 - Flutter SDK: Download Flutter
 - Dart: Included with Flutter SDK.
-- API key from OpenWeatherMap, or any other weather API provider.
+- API key from <a href="https://www.weatherapi.com/" target="_blank" rel="noopener noreferrer">WeatherApi</a>.
 
 ## Installation
 
