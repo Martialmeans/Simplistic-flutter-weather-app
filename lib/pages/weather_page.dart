@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:lottie/lottie.dart';
 import 'package:weather_app/service/weather_service.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -78,14 +77,21 @@ class _WeatherPageState extends State<WeatherPage> {
     switch (condition) {
       case "Clear":
       case "Sunny":
-        return "assets/clearSky.json";
+        return "assets/sun.gif";
       case "Cloudy":
       case "Overcast":
-        return "assets/cloudy.json";
+        return "assets/clouds.gif";
       case "Partly cloudy":
-        return "assets/partlyCloudy.json";
+        return "assets/partly.gif";
+      case "Snow":
+        return "assets/snow.gif";
+      case "Rain":
+      case "Light rain":
+        return "assets/rain.gif";
+      case "Thunderstorm":
+        return "assets/storm";
       default:
-        return "assets/loading.json";
+        return "assets/loading.gif";
     }
   }
 
@@ -98,13 +104,16 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     String animationFiles =
-        condition != null ? getAnimation(condition) : "assets/loading.json";
+        condition != null ? getAnimation(condition) : "assets/loading.gif";
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.white,
       body: Center(
         child: isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.blueGrey) // Show a loader while fetching data
+            ? Image.asset(
+                "assets/loading.gif",
+                width: 50,
+                height: 50,
+              ) // Show a loader while fetching data
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -112,14 +121,14 @@ class _WeatherPageState extends State<WeatherPage> {
                     children: [
                       const Icon(
                         FontAwesomeIcons.locationDot,
-                        color: Colors.red,
+                        color: Colors.cyan,
                       ),
                       Text(
                         cityName ?? "Unknown Location",
                         style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -127,7 +136,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     height: 50,
                   ),
                   if (condition != null)
-                    Lottie.asset(
+                    Image.asset(
                       animationFiles,
                       height: 200,
                     ),
@@ -140,12 +149,12 @@ class _WeatherPageState extends State<WeatherPage> {
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                     ),
                   Text(
                     "$condition",
                     style: const TextStyle(
-                        color: Colors.grey,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 24),
                   )

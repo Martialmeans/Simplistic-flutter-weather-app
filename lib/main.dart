@@ -15,13 +15,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          fontFamily: GoogleFonts.poppins().fontFamily,
-          brightness: Brightness.light),
-      darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          canvasColor: Colors.black,
-          colorScheme: const ColorScheme.dark(surface: Colors.black)),
-      themeMode: ThemeMode.system,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
       initialRoute: '/',
       routes: {'/': (context) => const WeatherPage()},
     );
