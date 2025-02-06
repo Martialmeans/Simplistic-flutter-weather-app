@@ -25,20 +25,20 @@ Example of the weather display screen, including the current temperature and con
 
 Clone the repository:
 
-```bash
+```
     git clone https://github.com/yourusername/weather_app.git
-    Navigate to the project directory:
 ```
+Navigate to the project directory:
 
-```bash
+```
     cd weather_app
-    Install dependencies:
 ```
+Install dependencies:
 
-```bash
-    flutter pub get
-    Run the app:
 ```
+    flutter pub get
+```
+Run the app:
 
 ```bash
     flutter run
