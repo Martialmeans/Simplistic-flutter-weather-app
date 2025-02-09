@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/model/weather_model.dart';
 import 'package:weather_app/service/weather_service.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -12,154 +10,49 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  String? cityName;
-  WeatherService? ws;
-  String? condition;
-  double? temperature;
-  bool isLoading = true;
+  final weatherService = WeatherService("d24ee592f5931d924e538f731be9a7e4");
+  WeatherModel? weather;
 
-  Future<void> userLocation() async {
+  // fetchWeather
+  void _fetchWeather() async {
+    // get user city name
+    String cityName = await weatherService.getUserLocation();
     try {
-      bool servicesEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!servicesEnabled) {
-        throw Exception("Location services are not enabled");
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception("Location permission has been denied");
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        throw Exception("Location services have been permanently disabled");
-      }
-
-      Position position = await Geolocator.getCurrentPosition();
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-
+      // get weather data
+      WeatherModel weatherData = await weatherService.getWeather(cityName);
       setState(() {
-        cityName = placemarks[0].locality;
-        ws = WeatherService(city: cityName!);
+        weather = weatherData;
       });
-
-      // Fetch weather after initializing the WeatherService
-      await fetchWeather();
     } catch (e) {
-      setState(() {
-        isLoading = false;
-        condition = "Error: $e";
-      });
-    }
-  }
-
-  Future<void> fetchWeather() async {
-    if (ws != null) {
-      try {
-        final weather = await ws!.fetchWeather();
-        setState(() {
-          condition = weather['current']['condition']['text'];
-          temperature = weather['current']['temp_c'];
-          isLoading = false;
-        });
-      } catch (e) {
-        setState(() {
-          isLoading = false;
-          condition = "Failed to fetch weather: $e";
-        });
-      }
-    }
-  }
-
-  String getAnimation(condition) {
-    switch (condition) {
-      case "Clear":
-      case "Sunny":
-        return "assets/sun.gif";
-      case "Cloudy":
-      case "Overcast":
-        return "assets/clouds.gif";
-      case "Partly cloudy":
-        return "assets/partly.gif";
-      case "Snow":
-        return "assets/snow.gif";
-      case "Rain":
-      case "Light rain":
-        return "assets/rain.gif";
-      case "Thunderstorm":
-        return "assets/storm";
-      default:
-        return "assets/loading.gif";
+      debugPrint(e as String?);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    userLocation();
+    _fetchWeather();
   }
 
   @override
   Widget build(BuildContext context) {
-    String animationFiles =
-        condition != null ? getAnimation(condition) : "assets/loading.gif";
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Weather App'),
+        centerTitle: true,
+      ),
       body: Center(
-        child: isLoading
-            ? Image.asset(
-                "assets/loading.gif",
-                width: 50,
-                height: 50,
-              ) // Show a loader while fetching data
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      const Icon(
-                        FontAwesomeIcons.locationDot,
-                        color: Colors.cyan,
-                      ),
-                      Text(
-                        cityName ?? "Unknown Location",
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  if (condition != null)
-                    Image.asset(
-                      animationFiles,
-                      height: 200,
-                    ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  if (temperature != null)
-                    Text(
-                      "${temperature!.toStringAsFixed(1)}°C",
-                      style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  Text(
-                    "$condition",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24),
-                  )
-                ],
-              ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //city name
+            Text(weather?.cityName ?? "Loading city..."),
+            //weather description
+            Text(weather?.description ?? "Loading weather..."),
+            //temperature
+            Text("${weather?.temperature.toInt()}°C"),
+          ],
+        ),
       ),
     );
   }

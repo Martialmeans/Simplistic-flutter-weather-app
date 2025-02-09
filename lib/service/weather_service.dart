@@ -1,28 +1,46 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:weather_app/model/weather_model.dart';
 
 class WeatherService {
-  final String city;
-  final String apiKey = "03923c392b1442c09b6182440240212";
+  final String apiKey;
 
-  WeatherService({required this.city});
+  WeatherService(this.apiKey);
 
-  Future<Map<String, dynamic>> fetchWeather() async {
-    final String url =
-        "https://api.weatherapi.com/v1/current.json?key=$apiKey&q=$city&aqi=no";
+  Future<WeatherModel> getWeather(String cityName) async {
+    final url = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey&units=metric');
+    final response = await http.get(url);
 
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception("Could not load weather data");
-      }
-    } catch (e) {
-      debugPrint("$e");
-      return {};
+    if (response.statusCode == 200) {
+      return WeatherModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load weather data');
     }
+  }
+
+  Future<String> getUserLocation() async {
+    // get user permission
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    // get user location
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      ),
+    );
+
+    // get city name from user location
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    String? cityName = placemarks[0].locality;
+
+    return cityName ?? "";
   }
 }
