@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.17
   font_awesome_flutter: ^10.8.0
   geocoding: ^3.0.0
   geolocator: ^13.0.2
@@ -26,7 +27,7 @@ flutter:
     - assets/sun.gif
     - assets/partly.gif
     - assets/clouds.gif
-    - assets/rain.gif
     - assets/snow.gif
     - assets/storm.gif
     - assets/loading.gif
+    - assets/rain-6.svg

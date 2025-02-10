@@ -12,6 +12,7 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   final weatherService = WeatherService("d24ee592f5931d924e538f731be9a7e4");
   WeatherModel? weather;
+  bool isLoading = true;
 
   // fetchWeather
   void _fetchWeather() async {
@@ -22,6 +23,7 @@ class _WeatherPageState extends State<WeatherPage> {
       WeatherModel weatherData = await weatherService.getWeather(cityName);
       setState(() {
         weather = weatherData;
+        isLoading = false;
       });
     } catch (e) {
       debugPrint(e as String?);
@@ -42,17 +44,19 @@ class _WeatherPageState extends State<WeatherPage> {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //city name
-            Text(weather?.cityName ?? "Loading city..."),
-            //weather description
-            Text(weather?.description ?? "Loading weather..."),
-            //temperature
-            Text("${weather?.temperature.toInt()}°C"),
-          ],
-        ),
+        child: isLoading
+            ? const CircularProgressIndicator.adaptive()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //city name
+                  Text(weather?.cityName ?? "Loading city..."),
+                  //weather description
+                  Text(weather?.description ?? "Loading weather..."),
+                  //temperature
+                  Text("${weather?.temperature.toInt()}°C"),
+                ],
+              ),
       ),
     );
   }
