@@ -51,6 +51,12 @@ class _WeatherPageState extends State<WeatherPage> {
                 children: [
                   //city name
                   Text(weather?.cityName ?? "Loading city..."),
+                  //weather animation
+                  Image.network(
+                    "https://rodrigokamada.github.io/openweathermap/images/${weather?.icon}_t@4x.png",
+                    width: 100,
+                    height: 100,
+                  ),
                   //weather description
                   Text(weather?.description ?? "Loading weather..."),
                   //temperature
