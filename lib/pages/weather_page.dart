@@ -13,6 +13,7 @@ class _WeatherPageState extends State<WeatherPage> {
   final weatherService = WeatherService("d24ee592f5931d924e538f731be9a7e4");
   WeatherModel? weather;
   bool isLoading = true;
+  String? localTime;
 
   // fetchWeather
   void _fetchWeather() async {
@@ -24,6 +25,7 @@ class _WeatherPageState extends State<WeatherPage> {
       setState(() {
         weather = weatherData;
         isLoading = false;
+        localTime = weatherService.displayTime();
       });
     } catch (e) {
       debugPrint(e as String?);
@@ -39,30 +41,55 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Weather App'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator.adaptive()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //city name
-                  Text(weather?.cityName ?? "Loading city..."),
-                  //weather animation
-                  Image.network(
-                    "https://rodrigokamada.github.io/openweathermap/images/${weather?.icon}_t@4x.png",
-                    width: 100,
-                    height: 100,
-                  ),
-                  //weather description
-                  Text(weather?.description ?? "Loading weather..."),
-                  //temperature
-                  Text("${weather?.temperature.toInt()}°C"),
-                ],
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF0061A4),
+              Color(0xFFB9EAFF),
+            ],
+          ),
+        ),
+        child: Center(
+          child: isLoading
+              ? const CircularProgressIndicator.adaptive()
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //city name
+                    Text(
+                      weather?.cityName ?? "Loading city...",
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    //weather animation
+                    Image.network(
+                      "https://rodrigokamada.github.io/openweathermap/images/${weather?.icon}_t@4x.png",
+                      width: 100,
+                      height: 100,
+                    ),
+                    //weather description
+                    Text(
+                      weather?.description ?? "Loading weather...",
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    //temperature
+                    Text(
+                      "${weather?.temperature.toInt()}°C",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      "Last updated: $localTime",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
