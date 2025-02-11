@@ -10,7 +10,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final weatherService = WeatherService("d24ee592f5931d924e538f731be9a7e4");
+  final weatherService = WeatherService("Enter your api key here");
   WeatherModel? weather;
   bool isLoading = true;
   String? localTime;
