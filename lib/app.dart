@@ -13,6 +13,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: GoogleFonts.poppins().fontFamily,
+        useMaterial3: true,
       ),
       home: const WeatherPage(),
     );
