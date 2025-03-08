@@ -1,0 +1,2 @@
+/home/musa/Documents/programming/flutter/Simplistic-flutter-weather-app/android/app/.cxx/Debug/4o68316t/x86/CMakeFiles/edit_cache.dir
+/home/musa/Documents/programming/flutter/Simplistic-flutter-weather-app/android/app/.cxx/Debug/4o68316t/x86/CMakeFiles/rebuild_cache.dir
