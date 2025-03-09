@@ -43,10 +43,4 @@ class WeatherService {
 
     return cityName ?? "";
   }
-
-  String displayTime() {
-    DateTime now = DateTime.now();
-    String formattedTime = "${now.hour}:${now.minute}";
-    return formattedTime;
-  }
 }

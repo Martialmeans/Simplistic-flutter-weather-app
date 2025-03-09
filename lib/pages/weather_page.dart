@@ -26,7 +26,6 @@ class _WeatherPageState extends State<WeatherPage> {
       setState(() {
         weather = weatherData;
         isLoading = false;
-        localTime = weatherService.displayTime();
       });
     } catch (e) {
       debugPrint(e.toString());
@@ -44,49 +43,56 @@ class _WeatherPageState extends State<WeatherPage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0061A4),
-              Color(0xFFB9EAFF),
-            ],
-          ),
+          color: Color(0xFF05C1FF),
         ),
         child: Center(
           child: isLoading
-              ? const CircularProgressIndicator()
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //city name
-                    Text(
-                      weather?.cityName ?? "Loading city...",
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                    //location pin
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 35,
+                        ),
+                        //city name
+                        Text(
+                          weather?.cityName ?? "Loading city...",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                        ),
+                      ],
                     ),
                     //weather animation
                     Image.network(
                       "https://rodrigokamada.github.io/openweathermap/images/${weather?.icon}_t@4x.png",
-                      width: 100,
-                      height: 100,
+                      width: 400,
+                      height: 400,
                     ),
                     //weather description
                     Text(
                       weather?.description ?? "Loading weather...",
                       style: const TextStyle(
-                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
                       ),
                     ),
                     //temperature
                     Text(
                       "${weather?.temperature.toInt()}°C",
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      "Last updated: $localTime",
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25
+                      ),
                     ),
                   ],
                 ),

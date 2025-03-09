@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/home/musa/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/musa/Android/Sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/musa/Documents/programming/flutter/Simplistic-flutter-weather-app/android/app/.cxx/RelWithDebInfo/2py2y1e3/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/musa/Android/Sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/musa/Documents/programming/flutter/Simplistic-flutter-weather-app/android/app/.cxx/RelWithDebInfo/2py2y1e3/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {},
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/home/musa/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/home/musa/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": []
+}
