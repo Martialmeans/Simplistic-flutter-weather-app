@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather_app/pages/weather_page.dart';
+import 'package:weather/pages/weather_page.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

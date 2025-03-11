@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/model/weather_model.dart';
-import 'package:weather_app/service/weather_service.dart';
-import 'package:weather_app/key.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:weather/model/weather_model.dart';
+import 'package:weather/service/weather_service.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -11,7 +11,8 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final weatherService = WeatherService(apiKey);
+  final apiKey = dotenv.env['WEATHER_API_KEY'];
+  late WeatherService weatherService;
   WeatherModel? weather;
   bool isLoading = true;
   String? localTime;
@@ -35,6 +36,9 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   void initState() {
     super.initState();
+    weatherService = WeatherService(apiKey);
+    // Debug: Print the API key
+    debugPrint("API Key: ${dotenv.env['WEATHER_API_KEY']}");
     _fetchWeather();
   }
 

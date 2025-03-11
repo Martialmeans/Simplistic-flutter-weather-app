@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:weather_app/model/weather_model.dart';
+import 'package:weather/model/weather_model.dart';
 
 class WeatherService {
-  final String apiKey;
+  final String? apiKey;
 
   WeatherService(this.apiKey);
 
